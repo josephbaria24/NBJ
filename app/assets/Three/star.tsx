@@ -29,7 +29,7 @@ const Stars: React.FC<StarsProps> = (props) => {
       <Points positions={sphere} stride={3} frustumCulled {...props}>
         <pointsMaterial
           transparent
-          color={"#f272c8"}
+          color={"#FFFFF"}
           size={0.002}
           sizeAttenuation={true}
           depthWrite={false}

@@ -19,20 +19,71 @@ const DynamicGlobe = dynamic(
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  // Ensure we're on the client before rendering browser-dependent components
   useEffect(() => {
     setIsClient(true);
+
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <div className="relative flex flex-col min-h-screen">
+      {/* Header Section */}
+      <>
+  {/* Left Header Section */}
+  <div
+    className={`fixed top-0 z-50 flex items-center p-3 transition-all duration-500 ${
+      isScrolled
+        ? "w-1/7 left-0 bg-transparent shadow-md rounded-br-3xl"
+        : "w-full bg-transparent rounded-none"
+    }`}
+    style={{
+      backdropFilter: isScrolled ? "blur(12px)" : "none",
+      transition: "all 0.4s ease-in-out",
+      borderRadius: isScrolled ? "0 0 10px 0" : "0", // Bottom right radius only when scrolled
+    }}
+  >
+    <Image src="/JLB.png" width={30} height={30} alt="Logo" />
+    <p
+      className={`pl-2 text-white font-geist-sans transition-all duration-300 ${
+        isScrolled ? "text-sm" : "text-m text-white"
+      }`}
+    >
+      Joseph Lucas Baria
+    </p>
+  </div>
+
+  {/* Right Header Section */}
+  {isScrolled && (
+    <div
+      className="fixed top-0 right-0 w-1/7 z-50 flex items-center justify-end p-5 bg-transparent shadow-md transition-all duration-500 rounded-bl-3xl"
+      style={{
+        backdropFilter: "blur(12px)",
+        transition: "all 0.5s ease-in-out",
+        borderRadius: "0 0 0 10px",  // Bottom left radius only when scrolled
+      }}
+    >
+      <p className="text-xs text-black font-geist-sans">
+        Web & Mobile Developer
+      </p>
+    </div>
+  )}
+</>
+
+
+
+
       {/* First Section with Chaos Effect */}
       <div className="relative flex flex-col min-h-screen">
         {isClient && <DynamicChaos />}
         <div className="absolute inset-0 bg-black/60 z-0"></div>
 
-        {/* Main Content */}
         <main className="flex-grow flex flex-col items-center justify-center text-center relative z-10">
           <h1 className="text-4xl font-bold sm:text-5xl font-geist-sans tracking-tighter text-white">
             NothingBut.jsph
@@ -67,7 +118,6 @@ export default function Home() {
 
       {/* Second Section with Globe Background */}
       <div className="relative flex flex-col min-h-screen">
-        {/* Ensure Globe covers the entire screen */}
         {isClient && (
           <div className="absolute inset-0 z-0">
             <DynamicGlobe />
@@ -76,7 +126,6 @@ export default function Home() {
 
         <div className="absolute inset-0 bg-black/60 z-10"></div>
 
-        {/* Content for Second Page */}
         <main className="flex-grow flex flex-col items-center justify-center text-center relative z-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 max-w-5xl">
             {/* Card 1 - RentConnect App */}
@@ -118,30 +167,10 @@ export default function Home() {
                 View Project →
               </a>
             </div>
-
-            {/* Card 3 - Add a New Project Here */}
-            {/* <div className="bg-white/10 backdrop-blur-lg p-4 rounded-xl shadow-lg border border-white/15 flex flex-col items-center text-center transform transition duration-300 hover:scale-105 hover:shadow-xl">
-              <div className="flex justify-center">
-                <Image src="/project3.png" width={250} height={150} alt="Project 3" className="rounded-md" />
-              </div>
-
-              <h3 className="text-md font-semibold mt-2 text-white">New Project</h3>
-              <p className="text-xs text-gray-300">
-                Another cool project that showcases my skills!
-              </p>
-              <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:underline mt-2 inline-block"
-              >
-                View Project →
-              </a>
-            </div> */}
           </div>
         </main>
 
-        {/* Footer - Pushed to the Bottom */}
+        {/* Footer */}
         <footer className="flex gap-6 flex-wrap items-center justify-center p-4 relative z-10 text-white">
           <a
             className="flex items-center gap-2 hover:underline hover:underline-offset-4"
@@ -158,15 +187,6 @@ export default function Home() {
           >
             <Image src="/github.svg" alt="github icon" width={16} height={16} />
             GitHub
-          </a>
-          <a
-            className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-            href="https://www.facebook.com/joseph.baria.24"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image src="/fb.svg" alt="FB icon" width={16} height={16} />
-            Facebook
           </a>
         </footer>
       </div>
